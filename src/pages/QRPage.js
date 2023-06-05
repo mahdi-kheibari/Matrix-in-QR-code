@@ -6,8 +6,6 @@ import Container from '@mui/material/Container';
 import { Box, Typography, Button, Stack, Grow } from '@mui/material';
 // mock data
 import { animationData } from '../_mock/qrData';
-// animate css
-import 'animate.css';
 
 export default function QRPage() {
   const [show, setShow] = useState(false);

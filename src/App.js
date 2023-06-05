@@ -6,6 +6,8 @@ import Router from './routes';
 import ThemeProvider from './theme';
 // context
 import Context from './store';
+// animate css
+import 'animate.css';
 
 // ----------------------------------------------------------------------
 
