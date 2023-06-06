@@ -1,4 +1,5 @@
 .transition-enter {
+  color: skyblue;
     opacity: 0;
     transform: scale(1.1);
   }
