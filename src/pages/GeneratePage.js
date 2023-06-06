@@ -76,7 +76,7 @@ export default function GeneratePage() {
             <Button variant="outlined" color="secondary" sx={{ mb: "20px" }} size='large' onClick={() => { setInputVal(Math.random().toString(36).slice(2, 7)); setGenerate(true) }} disabled={generate}>
               Generate new
             </Button>
-            <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important" }}> or </Box>
+            <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important" }}> Or </Box>
             <Box sx={{ display: "flex", alignItems: "stretch", alignSelf: "flex-end" }}>
               <TextField
                 value={inputVal}
@@ -142,7 +142,7 @@ export default function GeneratePage() {
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
-            {STEPS.find((item) => item.step === step).component({ inputVal })}
+            {STEPS.find((item) => item.step === step).component({ inputVal,binaryData })}
           </Grid>
         </Grid>
       </Container>
