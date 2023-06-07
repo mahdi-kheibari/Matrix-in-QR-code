@@ -11,12 +11,13 @@ import Iconify from '../components/iconify/Iconify';
 import StepOne from '../sections/generate/StepOne';
 import StepTwo from '../sections/generate/StepTwo';
 import StepThree from '../sections/generate/StepThree';
+import StepFour from '../sections/generate/StepFour';
 
 const STEPS = [
   { step: 1, title: "Text to binary", component: (props) => (<StepOne {...props} />) },
   { step: 2, title: "Create binary matrix", component: (props) => (<StepTwo {...props} />) },
   { step: 3, title: "Set default config", component: (props) => (<StepThree {...props} />) },
-  { step: 4, title: "Add data to main matrix", component: (props) => (<StepOne {...props} />) },
+  { step: 4, title: "Add data to main matrix", component: (props) => (<StepFour {...props} />) },
   { step: 5, title: "Create error correction message", component: (props) => (<StepOne {...props} />) },
   { step: 6, title: "Create QR code image", component: (props) => (<StepOne {...props} />) },
 ]
