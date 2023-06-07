@@ -40,7 +40,6 @@
     "@iconify/react": "^4.1.0",
     "@mui/lab": "^5.0.0-alpha.103",
     "@mui/material": "^5.11.10",
-    "animate.css": "^4.1.1",
     "animejs": "^3.2.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
