@@ -11,22 +11,22 @@ import GeneratePage from './pages/GeneratePage';
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/QR',
-      element: <QRPage />,
-    },
-    {
-      path: '/QR/generate',
-      element: <GeneratePage />,
-    },
-    {
-      path: '/QR/scan',
-      element: <ScanPage />,
-    },
-    {
+      path: "/",
       element: <SimpleLayout />,
       children: [
         { element: <Navigate to="/QR" />, index: true },
-        { path: '*', element: <Page404 /> },
+        {
+          path: '/QR',
+          element: <QRPage />,
+        },
+        {
+          path: '/QR/generate',
+          element: <GeneratePage />,
+        },
+        {
+          path: '/QR/scan',
+          element: <ScanPage />,
+        },
       ],
     },
     {

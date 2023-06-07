@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 // @mui
 import Container from '@mui/material/Container';
 import { Box, Button, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
+// anime js
+import anime from 'animejs';
 // mock data
 import { initGenerateMatrix } from '../_mock/qrData';
 // iconify
@@ -21,6 +23,7 @@ const STEPS = [
   { step: 5, title: "Create error correction message", component: (props) => (<StepOne {...props} />) },
   { step: 6, title: "Create QR code image", component: (props) => (<StepOne {...props} />) },
 ]
+
 export default function GeneratePage() {
   const canvasRef = useRef(null);
 
@@ -29,19 +32,81 @@ export default function GeneratePage() {
   const [binaryData, setBinaryData] = useState([]);
   const [generate, setGenerate] = useState(false);
   const [step, setStep] = useState(1);
+  const stepTitle = useRef(null);
+  const animation = useRef(null);
+  const textAnimation = useRef(null);
 
+  useEffect(() => {
+    if (stepTitle.current) {
+      stepTitleAnime()
+    }
+  }, [step]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    generateQRCode(qrMatrix, canvas);
+    if (generate) {
+      generateQRCode(qrMatrix, canvas);
+    }
   }, [qrMatrix]);
 
   useEffect(() => {
     if (generate) {
+      animation.current = anime.timeline({
+        easing: "easeInOutSine"
+      });
+      animation.current.add({
+        targets: `.input`,
+        translateY: 10,
+        duration: 500
+      })
+        .add({
+          targets: `.steps`,
+          opacity: 1,
+          translateY: -10,
+          duration: 1500
+        })
+      stepTitleAnime()
       setBinaryData(inputVal.split("").map((item) => { const newItem = item.charCodeAt(0).toString(2); return new Array(9 - newItem.length).join('0') + newItem }))
     }
   }, [generate]);
 
+  // text animation
+  const stepTitleAnime = () => {
+    textAnimation.current = anime.timeline({
+      autoplay: false,
+      easing: "easeInOutSine"
+    })
+      .add({
+        targets: '.step-title .line',
+        scaleY: [0, 1],
+        opacity: [0.5, 1],
+        easing: "easeOutExpo",
+        duration: 700
+      })
+      .add({
+        targets: '.step-title .line',
+        translateX: [0, stepTitle.current.getBoundingClientRect().width + 10],
+        easing: "easeOutExpo",
+        duration: 700,
+        delay: 100
+      })
+      .add({
+        targets: '.step-title .letter',
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: '-=775',
+        delay: (el, i) => 34 * (i + 1)
+      })
+      .add({
+        targets: '.step-title .line',
+        scaleY: [1, 0],
+        opacity: [1, 0.5],
+        easing: "easeOutExpo",
+        duration: 700
+      })
+    textAnimation.current.play()
+  }
   // generate QR code matrix to canvas
   const generateQRCode = (qrArray, canvas) => {
     const context = canvas.getContext('2d');
@@ -67,13 +132,19 @@ export default function GeneratePage() {
       }
     }
   };
+
+  const handleGenerateBtn = () => {
+    if (inputVal) {
+      setGenerate(true)
+    }
+  }
   return (
     <>
       <Helmet>
         <title> QR code | Generate </title>
       </Helmet>
       <Container maxWidth={'lg'} sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <Box component={'section'} sx={{ my: 2 }}>
+        <Box className='input' component={'section'} sx={{ my: 2 }}>
           <Stack direction={"row"} spacing={5} alignItems={"center"}>
             <Button variant="outlined" color="secondary" sx={{ mb: "20px" }} size='large' onClick={() => { setInputVal(Math.random().toString(36).slice(2, 7)); setGenerate(true) }} disabled={generate}>
               Generate new
@@ -93,13 +164,13 @@ export default function GeneratePage() {
                   maxLength: 12
                 }}
               />
-              <Button variant="outlined" color="secondary" size='large' onClick={() => setGenerate(true)} disabled={generate}>
+              <Button variant="outlined" color="secondary" size='large' onClick={handleGenerateBtn} disabled={generate}>
                 Create
               </Button>
             </Box>
           </Stack>
         </Box>
-        <Grid container component={'section'} sx={{ my: 2 }}>
+        {generate && <Grid className='steps' container component={'section'} sx={{ my: 2, opacity: 0, transform: "translateY(300px)" }}>
           <Grid item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <Grid container>
@@ -133,20 +204,21 @@ export default function GeneratePage() {
           </Grid>
           <Grid item xs={7}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center" }}>
+              <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative" }}>
                 <span>{`Step ${step}: `}</span>
-                <Box sx={{ fontSize: "25px", ml: 1 }}>
-                  {STEPS.find(item => item.step === step).title}
+                <Box className='step-title' ref={stepTitle} sx={{ fontSize: "25px", ml: 1, position: "relative" }}>
+                  <Box component={'span'} className="line" sx={{ position: "absolute", top: 0, left: 0, opacity: 0, height: "100%", width: "3px", backgroundColor: "#fff", transformOrigin: "0 50%" }} />
+                  {STEPS.find(item => item.step === step).title.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
                 </Box>
               </Typography>
-              <Button variant="outlined" color="secondary" onClick={() => setStep((prev) => prev + 1)} disabled={step === STEPS.length}>
+              <Button variant="outlined" color="secondary" onClick={() => { setStep((prev) => prev + 1); }} disabled={step === STEPS.length}>
                 next
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
             {STEPS.find((item) => item.step === step).component({ inputVal, binaryData })}
           </Grid>
-        </Grid>
+        </Grid>}
       </Container>
     </>
   );

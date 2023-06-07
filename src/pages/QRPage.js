@@ -37,7 +37,8 @@ export default function QRPage() {
         { opacity: 0 },
         { opacity: 1 },
       ],
-      duration: 500
+      duration: 500,
+      delay:500
     });
     animation.current.add({
       targets: `.first`,
