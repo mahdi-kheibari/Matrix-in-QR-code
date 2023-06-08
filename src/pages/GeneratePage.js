@@ -218,7 +218,8 @@ export default function GeneratePage() {
             </Box>
             {STEPS.find((item) => item.step === step).component({ inputVal, binaryData })}
           </Grid>
-        </Grid>}
+        </Grid>
+        }
       </Container>
     </>
   );
