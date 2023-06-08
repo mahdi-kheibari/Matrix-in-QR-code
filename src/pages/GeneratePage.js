@@ -35,6 +35,7 @@ export default function GeneratePage() {
   const stepTitle = useRef(null);
   const animation = useRef(null);
   const textAnimation = useRef(null);
+  const otherElAnimation = useRef(null);
 
   useEffect(() => {
     if (stepTitle.current) {
@@ -43,22 +44,50 @@ export default function GeneratePage() {
   }, [step]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
     if (generate) {
+      const canvas = canvasRef.current;
       generateQRCode(qrMatrix, canvas);
+      otherElAnimation.current = anime.timeline({
+        autoplay: false,
+        easing: "easeInOutSine"
+      })
+        .add({
+          targets: `.first .zoomIn`,
+          fontSize: "275px",
+          duration: 500
+        })
+        .add({
+          targets: `.first .data`,
+          fontSize: "10px",
+          lineHeight: "11px",
+          duration: 1300
+        })
+        .add({
+          targets: `.down-icon`,
+          opacity: 1,
+          translateY: [-40, -30],
+          duration: 1500,
+        })
+        .add({
+          targets: `.qr-canvas`,
+          width: 270,
+          height: 270,
+          duration: 1500,
+        })
+      otherElAnimation.current.play()
     }
-  }, [qrMatrix]);
+  }, [qrMatrix, generate]);
 
   useEffect(() => {
     if (generate) {
       animation.current = anime.timeline({
         easing: "easeInOutSine"
-      });
-      animation.current.add({
-        targets: `.input`,
-        translateY: 10,
-        duration: 500
       })
+        .add({
+          targets: `.input`,
+          translateY: 10,
+          duration: 500
+        })
         .add({
           targets: `.steps`,
           opacity: 1,
@@ -121,8 +150,8 @@ export default function GeneratePage() {
 
     context.fillStyle = '#DBD8E3';
     context.fillRect(0, 0, canvasSize, canvasSize);
-
     context.fillStyle = '#352F44';
+
 
     for (let i = 0; i < qrSize; i += 1) {
       for (let j = 0; j < qrSize; j += 1) {
@@ -173,30 +202,30 @@ export default function GeneratePage() {
         {generate && <Grid className='steps' container component={'section'} sx={{ my: 2, opacity: 0, transform: "translateY(300px)" }}>
           <Grid item xs={4}>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <Grid container>
-                <Grid item xs={1} sx={{ lineHeight: 1, display: "flex", justifyContent: "flex-end" }}>
-                  <Box className="animate__animated animate__zoomIn" sx={{ fontSize: "275px", fontWeight: 300 }}>
-                    {"["}
-                  </Box>
-                </Grid>
-                <Grid item xs={10} sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: 2 }}>
+              <Box className="first" sx={{ width: "425px", height: "380px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Box className="zoomIn" sx={{ fontSize: 0, fontWeight: 300 }}>
+                  {"["}
+                </Box>
+                <Box sx={{ position: "relative" }}>
                   {qrMatrix.map((item, index) => {
-                    const data = item.map((i, innerIndex) => <Box component={'span'} key={innerIndex} className='animate__animated animate__fadeInDown animate__slower'>{`${i}${innerIndex !== item.length - 1 ? "\u00A0 \u00A0" : ""}`}</Box>)
+                    const data = item.map((i, innerIndex) => <Box component={'span'} key={innerIndex} >{`${i}${innerIndex !== item.length - 1 ? "\u00A0 \u00A0" : ""}`}</Box>)
                     return (
-                      <Box key={index} sx={{ fontSize: "11.2px", lineHeight: "11px" }}>
+                      <Box key={index} className='data' sx={{ fontSize: 0, lineHeight: 0 }} >
                         {data}
                       </Box>
                     )
                   })}
-                </Grid>
-                <Grid item xs={1} sx={{ lineHeight: 1 }}>
-                  <Box className="animate__animated animate__zoomIn" sx={{ fontSize: "275px", fontWeight: 300 }}>
-                    {"]"}
-                  </Box>
-                </Grid>
-              </Grid>
-              <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
-              <canvas ref={canvasRef} style={{ width: "270px", height: "270px" }} />
+                </Box>
+                <Box className="zoomIn" sx={{ fontSize: 0, fontWeight: 300 }}>
+                  {"]"}
+                </Box>
+              </Box>
+              <Box className='down-icon' sx={{ fontSize: "28px", opacity: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
+              </Box>
+              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden" }}>
+                <canvas ref={canvasRef} style={{ width: "270px", height: "270px" }} />
+              </Box>
             </Box>
           </Grid>
           <Grid item xs={1} sx={{ display: "flex", justifyContent: "center" }}>
