@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 // @mui
 import { Box, Grid, Divider, Typography } from '@mui/material'
@@ -44,7 +44,7 @@ function StepFour({ binaryData, setStep, changeStep, setChangeStep, setDataToMat
       .add({
         targets: `.example`,
         opacity: [0, 1],
-        duration: 1000,
+        duration: 1500,
       })
   }, []);
   useEffect(() => {

@@ -15,13 +15,14 @@ import StepOne from '../sections/generate/StepOne';
 import StepTwo from '../sections/generate/StepTwo';
 import StepThree from '../sections/generate/StepThree';
 import StepFour from '../sections/generate/StepFour';
+import StepFive from '../sections/generate/StepFive';
 
 const STEPS = [
   { step: 1, title: "Text to binary", component: (props) => (<StepOne {...props} />) },
   { step: 2, title: "Create binary matrix", component: (props) => (<StepTwo {...props} />) },
   { step: 3, title: "Set default config", component: (props) => (<StepThree {...props} />) },
   { step: 4, title: "Add data to main matrix", component: (props) => (<StepFour {...props} />) },
-  { step: 5, title: "Create error correction message", component: (props) => (<StepOne {...props} />) },
+  { step: 5, title: "Create error correction message", component: (props) => (<StepFive {...props} />) },
   { step: 6, title: "Create QR code image", component: (props) => (<StepOne {...props} />) },
 ]
 
@@ -74,8 +75,8 @@ export default function GeneratePage() {
         })
         .add({
           targets: `.qr-canvas`,
-          width: 270,
-          height: 270,
+          width: [0, 230],
+          height: 230,
           duration: 1500,
         })
       otherElAnimation.current.play()
@@ -214,12 +215,14 @@ export default function GeneratePage() {
     }).add({
       targets: `.default-config`,
       keyframes: [
+        { opacity: 0 },
         { opacity: 1 },
         { opacity: 0 },
         { opacity: 1 },
       ],
       loop: 4,
-      duration: 1500
+      duration: 1500,
+      delay: 5000
     })
     const defaultConfigIndex = [
       [0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20],
@@ -270,7 +273,7 @@ export default function GeneratePage() {
     let startRow = 18
     let startCol = 20
     let horizontalMatrixIndex = 0
-    const horizontalMatrix = [9, 20, 9, 20, 1]
+    const horizontalMatrix = [9, 20, 9, 20, 0]
     let rowOperation = -1
     let counter = 0
     const lengthMatrix = binaryData.length.toString(2);
@@ -312,6 +315,15 @@ export default function GeneratePage() {
         rowOperation *= -1
         startRow += rowOperation
         horizontalMatrixIndex += 1
+      }
+    }
+    setQrMatrix(newQrMatrix)
+  }
+  const setAllDataToMatrix = () => {
+    const newQrMatrix = [...qrMatrix]
+    for (let indexRow = 0; indexRow < 21; indexRow += 1) {
+      for (let indexCol = 0; indexCol < 21; indexCol += 1) {
+        newQrMatrix[indexRow][indexCol] = qrArray[((indexRow + 4) * 4) + 1][((indexCol + 4) * 4) + 1]
       }
     }
     setQrMatrix(newQrMatrix)
@@ -372,7 +384,7 @@ export default function GeneratePage() {
               <Box className='down-icon' sx={{ fontSize: "28px", opacity: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
               </Box>
-              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", ml: 4 }}>
+              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative" }}>
                 <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
                 <canvas ref={canvasRef} style={{ width: "230px", height: "230px" }} />
               </Box>
@@ -395,7 +407,7 @@ export default function GeneratePage() {
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
-            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg, setDataToMatrix })}
+            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg, setDataToMatrix, setAllDataToMatrix })}
           </Grid>
         </Grid>
         }
