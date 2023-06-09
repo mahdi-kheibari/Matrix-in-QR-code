@@ -7,8 +7,15 @@ import anime from 'animejs';
 // components
 import Iconify from '../../components/iconify/Iconify'
 
-function StepOne({ inputVal, binaryData }) {
+function StepOne({ inputVal, binaryData, setStep, changeStep,setChangeStep }) {
   const animation = useRef(null);
+
+  useEffect(() => {
+    if (changeStep) {
+      setStep((prev) => prev + 1)
+      setChangeStep(false)
+    }
+  }, [changeStep]);
 
   useEffect(() => {
     if (inputVal) {
@@ -80,6 +87,9 @@ function StepOne({ inputVal, binaryData }) {
 StepOne.propTypes = {
   inputVal: PropTypes.string,
   binaryData: PropTypes.array,
+  setStep: PropTypes.func,
+  changeStep: PropTypes.bool,
+  setChangeStep: PropTypes.func,
 }
 
 export default StepOne

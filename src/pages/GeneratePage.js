@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import QRCode from 'qrcode';
 // @mui
 import Container from '@mui/material/Container';
 import { Box, Button, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
@@ -27,15 +28,18 @@ const STEPS = [
 export default function GeneratePage() {
   const canvasRef = useRef(null);
 
+  const [qrArray, setQRArray] = useState([]);
   const [qrMatrix, setQrMatrix] = useState(initGenerateMatrix);
   const [inputVal, setInputVal] = useState("");
   const [binaryData, setBinaryData] = useState([]);
   const [generate, setGenerate] = useState(false);
+  const [changeStep, setChangeStep] = useState(false);
   const [step, setStep] = useState(1);
   const stepTitle = useRef(null);
   const animation = useRef(null);
   const textAnimation = useRef(null);
   const otherElAnimation = useRef(null);
+  const defaultConfigAnimation = useRef(null);
 
   useEffect(() => {
     if (stepTitle.current) {
@@ -45,8 +49,9 @@ export default function GeneratePage() {
 
   useEffect(() => {
     if (generate) {
+      console.log("test");
       const canvas = canvasRef.current;
-      generateQRCode(qrMatrix, canvas);
+      generateQRCodeCanvas(qrMatrix, canvas);
       otherElAnimation.current = anime.timeline({
         autoplay: false,
         easing: "easeInOutSine"
@@ -58,8 +63,8 @@ export default function GeneratePage() {
         })
         .add({
           targets: `.first .data`,
-          fontSize: "10px",
-          lineHeight: "11px",
+          fontSize: ["0", "10px"],
+          lineHeight: ["0", "11px"],
           duration: 1300
         })
         .add({
@@ -80,6 +85,7 @@ export default function GeneratePage() {
 
   useEffect(() => {
     if (generate) {
+      generateQRCodeImg()
       animation.current = anime.timeline({
         easing: "easeInOutSine"
       })
@@ -137,12 +143,13 @@ export default function GeneratePage() {
     textAnimation.current.play()
   }
   // generate QR code matrix to canvas
-  const generateQRCode = (qrArray, canvas) => {
+  const generateQRCodeCanvas = (qrArray, canvas) => {
     const context = canvas.getContext('2d');
     const cellSize = 10;
+    const margin = 10;
 
     const qrSize = qrArray.length;
-    const canvasSize = qrSize * cellSize;
+    const canvasSize = qrSize * cellSize + 2 * margin;
 
     canvas.width = canvasSize;
     canvas.height = canvasSize;
@@ -156,15 +163,108 @@ export default function GeneratePage() {
     for (let i = 0; i < qrSize; i += 1) {
       for (let j = 0; j < qrSize; j += 1) {
         if (qrArray[i][j] === 1) {
-          context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+          context.fillRect(margin + j * cellSize, margin + i * cellSize, cellSize, cellSize);
         }
       }
     }
+  };
+  // generate QR code img to array
+  const generateQRCodeImg = () => {
+    QRCode.toDataURL(inputVal, { errorCorrectionLevel: 'L', maskPattern: 0b001 })
+      .then(dataURL => {
+        const img = new Image();
+        img.src = dataURL;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          context.drawImage(img, 0, 0);
+          const qrData = context.getImageData(0, 0, img.width, img.height).data;
+
+          const qrArray = [];
+          for (let y = 0; y < img.height; y += 1) {
+            qrArray[y] = [];
+            for (let x = 0; x < img.width; x += 1) {
+              const pixelIndex = (y * img.width + x) * 4;
+              const isBlack = qrData[pixelIndex] < 128;
+              qrArray[y][x] = isBlack ? 1 : 0;
+            }
+          }
+
+          setQRArray(qrArray);
+        };
+      })
+      .catch(error => console.error(error));
   };
 
   const handleGenerateBtn = () => {
     if (inputVal) {
       setGenerate(true)
+    }
+  }
+  const handleChangeStep = () => {
+    setChangeStep(true)
+  }
+
+  const handleDefaultConfigImg = () => {
+    defaultConfigAnimation.current = anime.timeline({
+      autoplay: false,
+      easing: "easeInOutSine"
+    }).add({
+      targets: `.default-config`,
+      keyframes: [
+        { opacity: 1 },
+        { opacity: 0 },
+        { opacity: 1 },
+      ],
+      loop: 4,
+      duration: 1500
+    })
+    const defaultConfigIndex = [
+      [0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20],
+      [0, 6, 8, 14, 20],
+      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+      [0, 6, 8, 14, 20],
+      [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 15, 16, 17, 18, 19, 20],
+      [8],
+      [0, 1, 2, 5, 6, 7, 8, 13, 14, 15, 16, 17, 18, 19, 20],
+      [],
+      [6],
+      [],
+      [6],
+      [8],
+      [0, 1, 2, 3, 4, 5, 6, 8],
+      [0, 6, 8],
+      [0, 2, 3, 4, 6],
+      [0, 2, 3, 4, 6],
+      [0, 2, 3, 4, 6, 8],
+      [0, 6, 8, 19, 20],
+      [0, 1, 2, 3, 4, 5, 6, 8, 19, 20],
+    ]
+    defaultConfigIndex.forEach((item, index) => {
+      item.forEach((i) => {
+        setQrMatrix(prev => prev.map((val, indexVal) => {
+          if (indexVal === index) {
+            return val.map((v, indexV) => indexV === i ? qrArray[((index + 4) * 4) + 1][((i + 4) * 4) + 1] : v)
+          }
+          return val
+        }))
+      })
+    })
+    return {
+      play: () => defaultConfigAnimation.current.play(),
+      pause: () => {
+        defaultConfigAnimation.current = anime({
+          autoplay: true,
+          targets: `.default-config`,
+          opacity: [1, 0],
+          duration: 1500
+        })
+      }
     }
   }
   return (
@@ -210,7 +310,7 @@ export default function GeneratePage() {
                   {qrMatrix.map((item, index) => {
                     const data = item.map((i, innerIndex) => <Box component={'span'} key={innerIndex} >{`${i}${innerIndex !== item.length - 1 ? "\u00A0 \u00A0" : ""}`}</Box>)
                     return (
-                      <Box key={index} className='data' sx={{ fontSize: 0, lineHeight: 0 }} >
+                      <Box key={index} className='data' >
                         {data}
                       </Box>
                     )
@@ -223,8 +323,9 @@ export default function GeneratePage() {
               <Box className='down-icon' sx={{ fontSize: "28px", opacity: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
               </Box>
-              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden" }}>
-                <canvas ref={canvasRef} style={{ width: "270px", height: "270px" }} />
+              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", ml: 4 }}>
+                <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
+                <canvas ref={canvasRef} style={{ width: "230px", height: "230px" }} />
               </Box>
             </Box>
           </Grid>
@@ -240,12 +341,12 @@ export default function GeneratePage() {
                   {STEPS.find(item => item.step === step).title.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
                 </Box>
               </Typography>
-              <Button variant="outlined" color="secondary" onClick={() => { setStep((prev) => prev + 1); }} disabled={step === STEPS.length}>
+              <Button variant="outlined" color="secondary" onClick={handleChangeStep} disabled={step === STEPS.length}>
                 next
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
-            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData })}
+            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg })}
           </Grid>
         </Grid>
         }
