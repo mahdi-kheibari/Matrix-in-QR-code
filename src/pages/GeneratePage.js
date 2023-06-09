@@ -49,7 +49,6 @@ export default function GeneratePage() {
 
   useEffect(() => {
     if (generate) {
-      console.log("test");
       const canvas = canvasRef.current;
       generateQRCodeCanvas(qrMatrix, canvas);
       otherElAnimation.current = anime.timeline({
@@ -247,11 +246,11 @@ export default function GeneratePage() {
     ]
     defaultConfigIndex.forEach((item, index) => {
       item.forEach((i) => {
-        setQrMatrix(prev => prev.map((val, indexVal) => {
-          if (indexVal === index) {
-            return val.map((v, indexV) => indexV === i ? qrArray[((index + 4) * 4) + 1][((i + 4) * 4) + 1] : v)
+        setQrMatrix(prev => prev.map((row, indexRow) => {
+          if (indexRow === index) {
+            return row.map((col, indexCol) => indexCol === i ? qrArray[((index + 4) * 4) + 1][((i + 4) * 4) + 1] : col)
           }
-          return val
+          return row
         }))
       })
     })
@@ -266,6 +265,56 @@ export default function GeneratePage() {
         })
       }
     }
+  }
+  const setDataToMatrix = () => {
+    let startRow = 18
+    let startCol = 20
+    let horizontalMatrixIndex = 0
+    const horizontalMatrix = [9, 20, 9, 20, 1]
+    let rowOperation = -1
+    let counter = 0
+    const lengthMatrix = binaryData.length.toString(2);
+    const newBinaryData = [new Array(9 - lengthMatrix.length).join('0') + lengthMatrix, ...binaryData]
+    const operation = (row, indexRow) => {
+      if (indexRow === startRow) {
+        return row.map((col, indexCol) => {
+          if (indexCol === startCol) {
+            // console.log(`[${indexRow}][${indexCol}]`);
+            return parseInt(newBinaryData.join("")[counter], 10)
+          }
+          return col
+        })
+      }
+      return row
+    }
+    let newQrMatrix = [...qrMatrix]
+    console.log(newBinaryData);
+    while (counter < newBinaryData.join("").length) {
+      if (startRow !== horizontalMatrix[horizontalMatrixIndex]) {
+        for (let i = 0; i < 2; i += 1) {
+          newQrMatrix = newQrMatrix.map((row, indexRow) => {
+            return operation(row, indexRow)
+          })
+          counter += 1
+          startCol -= 1
+        }
+        startCol += 2
+        startRow += rowOperation
+      } else {
+        for (let i = 0; i < 4; i += 1) {
+          newQrMatrix = newQrMatrix.map((row, indexRow) => {
+            return operation(row, indexRow)
+          })
+          counter += 1
+          startCol -= 1
+        }
+        startCol += 2
+        rowOperation *= -1
+        startRow += rowOperation
+        horizontalMatrixIndex += 1
+      }
+    }
+    setQrMatrix(newQrMatrix)
   }
   return (
     <>
@@ -346,7 +395,7 @@ export default function GeneratePage() {
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
-            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg })}
+            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg, setDataToMatrix })}
           </Grid>
         </Grid>
         }
