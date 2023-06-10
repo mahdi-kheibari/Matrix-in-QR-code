@@ -16,6 +16,7 @@ export default function GlobalStyles() {
           width: '100%',
           height: '100%',
           WebkitOverflowScrolling: 'touch',
+          overflowX:"hidden"
         },
         body: {
           margin: 0,
@@ -23,7 +24,8 @@ export default function GlobalStyles() {
           width: '100%',
           height: '100%',
           backgroundColor: "#352F44",
-          color: "#DBD8E3"
+          color: "#DBD8E3",
+          overflowX:"hidden"
         },
         '#root': {
           width: '100%',

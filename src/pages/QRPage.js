@@ -2,15 +2,18 @@ import { useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import Container from '@mui/material/Container';
-import { Box, Typography, Button, Stack } from '@mui/material';
+import { Box, Typography, Button, Stack, Grid } from '@mui/material';
 // anime js
 import anime from 'animejs';
 // mock data
 import { animationData } from '../_mock/qrData';
+// custom hooks
+import useResponsive from '../hooks/useResponsive';
 
 export default function QRPage() {
   const animation = useRef(null);
 
+  const mdAndDown = useResponsive('down', 'md')
   useEffect(() => {
     animation.current = anime.timeline({
       autoplay: true,
@@ -18,12 +21,12 @@ export default function QRPage() {
     });
     animation.current.add({
       targets: `.first .zoomIn`,
-      fontSize: "316.5px",
+      fontSize: mdAndDown ? "305px" : "316.5px",
       duration: 500
     });
     animation.current.add({
       targets: `.first .data`,
-      fontSize: "12.5px",
+      fontSize: mdAndDown ? "11.5px" : "12.5px",
       lineHeight: "16.5px",
       duration: 1300
     });
@@ -83,28 +86,32 @@ export default function QRPage() {
           <Typography className='text' variant="h2" sx={{ mb: 1, transform: "translateY(-100px)", opacity: 0 }}>
             Matrix in QR code
           </Typography>
-          <Box className='btn' sx={{ display: "flex", alignItems: "center", justifyContent: "stretch", transform: "translateY(-100px)", opacity: 0 }}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              component={RouterLink}
-              to={"generate"}
-              sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1 }}
-            >
-              <Box component={'img'} src='/assets/images/generate.svg' alt='generate' width={65} height={65} sx={{ my: 1 }} />
-              Generating
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              component={RouterLink}
-              to={"scan"}
-              sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1, ml: 1 }}
-            >
-              <Box component={'img'} src='/assets/images/scan.gif' alt='generate' width={65} height={65} sx={{ my: 1 }} />
-              Scaning
-            </Button>
-          </Box>
+          <Grid className='btn' container spacing={1} sx={{ transform: "translateY(-100px)", opacity: 0 }}>
+            <Grid item xs={6}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                component={RouterLink}
+                to={"generate"}
+                sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1, width: "100%" }}
+              >
+                <Box component={'img'} src='/assets/images/generate.svg' alt='generate' width={65} height={65} sx={{ my: 1 }} />
+                Generating
+              </Button>
+            </Grid>
+            <Grid item xs={6} >
+              <Button
+                variant="outlined"
+                color="secondary"
+                component={RouterLink}
+                to={"scan"}
+                sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1, width: "100%" }}
+              >
+                <Box component={'img'} src='/assets/images/scan.gif' alt='generate' width={65} height={65} sx={{ my: 1 }} />
+                Scaning
+              </Button>
+            </Grid>
+          </Grid>
         </Stack>
       </Container >
     </>
