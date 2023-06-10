@@ -18,6 +18,8 @@ import StepFour from '../sections/generate/StepFour';
 import StepFive from '../sections/generate/StepFive';
 import StepSix from '../sections/generate/StepSix';
 import StepSeven from '../sections/generate/StepSeven';
+// custom hooks
+import useResponsive from '../hooks/useResponsive';
 
 const STEPS = [
   { step: 1, title: "Text to binary", component: (props) => (<StepOne {...props} />) },
@@ -31,7 +33,7 @@ const STEPS = [
 
 export default function GeneratePage() {
   const canvasRef = useRef(null);
-
+  const mdAndDown = useResponsive('down', 'md')
   const [qrArray, setQRArray] = useState([]);
   const [qrMatrix, setQrMatrix] = useState(initGenerateMatrix);
   const [inputVal, setInputVal] = useState("");
@@ -61,25 +63,25 @@ export default function GeneratePage() {
       })
         .add({
           targets: `.first .zoomIn`,
-          fontSize: "275px",
+          fontSize: mdAndDown ? "120px" : "275px",
           duration: 500
         })
         .add({
           targets: `.first .data`,
-          fontSize: ["0", "10px"],
-          lineHeight: ["0", "11px"],
+          fontSize: ["0", mdAndDown ? "4.5px" : "10px"],
+          lineHeight: ["0", mdAndDown ? "4.9px" : "11px"],
           duration: 1300
         })
         .add({
           targets: `.down-icon`,
           opacity: 1,
-          translateY: [-40, -30],
+          translateY: [-40, mdAndDown ? 0 : -30],
           duration: 1500,
         })
         .add({
           targets: `.qr-canvas`,
-          width: [0, 230],
-          height: 230,
+          width: [0, mdAndDown ? 110 : 230],
+          height: mdAndDown ? 110 : 230,
           duration: 1500,
         })
       otherElAnimation.current.play()
@@ -371,11 +373,11 @@ export default function GeneratePage() {
       </Helmet>
       <Container maxWidth={'lg'} sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <Box className='input' component={'section'} sx={{ my: 2 }}>
-          <Stack direction={"row"} spacing={5} alignItems={"center"}>
-            <Button variant="outlined" color="secondary" sx={{ mb: "20px" }} size='large' onClick={() => { setInputVal(Math.random().toString(36).slice(2, 7)); setGenerate(true) }} disabled={generate}>
+          <Stack direction={mdAndDown ? "column" : "row"} spacing={5} alignItems={"center"}>
+            {(!mdAndDown || !generate) && <Button variant="outlined" color="secondary" sx={{ mb: "20px" }} size='large' onClick={() => { setInputVal(Math.random().toString(36).slice(2, 7)); setGenerate(true) }} disabled={generate}>
               Generate new
-            </Button>
-            <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important" }}> Or </Box>
+            </Button>}
+            {(!mdAndDown || !generate) && <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important" }}> Or </Box>}
             <Box sx={{ display: "flex", alignItems: "stretch", alignSelf: "flex-end" }}>
               <TextField
                 value={inputVal}
@@ -396,10 +398,10 @@ export default function GeneratePage() {
             </Box>
           </Stack>
         </Box>
-        {generate && <Grid className='steps' container component={'section'} sx={{ my: 2, opacity: 0, transform: "translateY(300px)" }}>
-          <Grid item xs={4}>
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <Box className="first" sx={{ width: "425px", height: "380px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {generate && <Grid className='steps' container component={'section'} sx={{ my: { md: 2 }, opacity: 0, transform: "translateY(300px)" }}>
+          <Grid item xs={12} md={4}>
+            <Box sx={{ display: "flex", flexDirection: { xs: "row", md: "column" }, alignItems: "center" }}>
+              <Box className="first" sx={{ width: "425px", height: { md: "380px" }, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 2 }}>
                 <Box className="zoomIn" sx={{ fontSize: 0, fontWeight: 300 }}>
                   {"["}
                 </Box>
@@ -417,20 +419,20 @@ export default function GeneratePage() {
                   {"]"}
                 </Box>
               </Box>
-              <Box className='down-icon' sx={{ fontSize: "28px", opacity: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
+              <Box className='down-icon' sx={{ fontSize: "28px", opacity: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 3 }}>
+                <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: { xs: "1.5rem", md: "3rem" }, height: { xs: "1.5rem", md: "3rem" }, mx: { md: "auto" }, transform: { xs: "rotate(-90deg)", md: "initial" } }} />
               </Box>
-              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative" }}>
+              <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", flexShrink: 0 }}>
                 <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
                 <Box className='mask-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
-                <canvas ref={canvasRef} style={{ width: "230px", height: "230px" }} />
+                <canvas ref={canvasRef} style={{ width: { xs: "110px", md: "230px" }, height: { xs: "110px", md: "230px" } }} />
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={1} sx={{ display: "flex", justifyContent: "center" }}>
-            <Divider orientation='vertical' />
+          <Grid item xs={12} md={1} sx={{ display: "flex", justifyContent: "center", my: { xs: 1, md: "initial" } }}>
+            <Divider orientation={mdAndDown ? "horizontal" : 'vertical'} sx={{ width: { xs: "100%", md: "initial" } }} />
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={12} md={7}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative" }}>
                 <span>{`Step ${step}: `}</span>
