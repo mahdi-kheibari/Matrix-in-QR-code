@@ -16,6 +16,8 @@ import StepTwo from '../sections/generate/StepTwo';
 import StepThree from '../sections/generate/StepThree';
 import StepFour from '../sections/generate/StepFour';
 import StepFive from '../sections/generate/StepFive';
+import StepSix from '../sections/generate/StepSix';
+import StepSeven from '../sections/generate/StepSeven';
 
 const STEPS = [
   { step: 1, title: "Text to binary", component: (props) => (<StepOne {...props} />) },
@@ -23,7 +25,8 @@ const STEPS = [
   { step: 3, title: "Set default config", component: (props) => (<StepThree {...props} />) },
   { step: 4, title: "Add data to main matrix", component: (props) => (<StepFour {...props} />) },
   { step: 5, title: "Create error correction message", component: (props) => (<StepFive {...props} />) },
-  { step: 6, title: "Create QR code image", component: (props) => (<StepOne {...props} />) },
+  { step: 6, title: "Add mask pattern", component: (props) => (<StepSix {...props} />) },
+  { step: 7, title: "Create QR code image", component: (props) => (<StepSeven {...props} />) },
 ]
 
 export default function GeneratePage() {
@@ -40,7 +43,7 @@ export default function GeneratePage() {
   const animation = useRef(null);
   const textAnimation = useRef(null);
   const otherElAnimation = useRef(null);
-  const defaultConfigAnimation = useRef(null);
+  const configAnimation = useRef(null);
 
   useEffect(() => {
     if (stepTitle.current) {
@@ -209,7 +212,7 @@ export default function GeneratePage() {
   }
 
   const handleDefaultConfigImg = () => {
-    defaultConfigAnimation.current = anime.timeline({
+    configAnimation.current = anime.timeline({
       autoplay: false,
       easing: "easeInOutSine"
     }).add({
@@ -258,11 +261,35 @@ export default function GeneratePage() {
       })
     })
     return {
-      play: () => defaultConfigAnimation.current.play(),
+      play: () => configAnimation.current.play(),
       pause: () => {
-        defaultConfigAnimation.current = anime({
+        configAnimation.current = anime({
           autoplay: true,
           targets: `.default-config`,
+          opacity: [1, 0],
+          duration: 1500
+        })
+      }
+    }
+  }
+  const handleMaskConfigImg = () => {
+    configAnimation.current = anime.timeline({
+      autoplay: false,
+      easing: "easeInOutSine"
+    }).add({
+      targets: `.mask-config`,
+      opacity: [0, 1],
+      loop: true,
+      direction: "alternate",
+      duration: 1500,
+      delay: 1000
+    })
+    return {
+      play: () => configAnimation.current.play(),
+      pause: () => {
+        configAnimation.current = anime({
+          autoplay: true,
+          targets: `.mask-config`,
           opacity: [1, 0],
           duration: 1500
         })
@@ -328,6 +355,9 @@ export default function GeneratePage() {
     }
     setQrMatrix(newQrMatrix)
   }
+  const handleDownloadImage = () => {
+    return canvasRef.current.toDataURL("image/png");
+  }
   return (
     <>
       <Helmet>
@@ -386,6 +416,7 @@ export default function GeneratePage() {
               </Box>
               <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative" }}>
                 <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
+                <Box className='mask-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
                 <canvas ref={canvasRef} style={{ width: "230px", height: "230px" }} />
               </Box>
             </Box>
@@ -407,7 +438,7 @@ export default function GeneratePage() {
                 <Iconify icon="icon-park-twotone:right-one" />
               </Button>
             </Box>
-            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg, setDataToMatrix, setAllDataToMatrix })}
+            {STEPS.find((item) => item.step === step).component({ inputVal, binaryData, setStep, changeStep, setChangeStep, handleDefaultConfigImg, setDataToMatrix, setAllDataToMatrix, handleMaskConfigImg, handleDownloadImage })}
           </Grid>
         </Grid>
         }

@@ -7,7 +7,7 @@ import anime from 'animejs';
 // components
 import Iconify from '../../components/iconify/Iconify'
 
-function StepOne({ inputVal, binaryData, setStep, changeStep,setChangeStep }) {
+function StepOne({ inputVal, binaryData, setStep, changeStep, setChangeStep }) {
   const animation = useRef(null);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ function StepOne({ inputVal, binaryData, setStep, changeStep,setChangeStep }) {
         <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
       </Box>
       <Box className='ascii-code' sx={{ fontSize: "28px", opacity: 0, position: "absolute", left: "50%", top: "15%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontSize: "25px" }}>{`ASCII code: `}</div>
+        <div style={{ fontSize: "25px", flexShrink: 0 }}>{`ASCII code: `}</div>
         <Box sx={{ fontSize: "25px", mx: "auto" }}>{`[ ${inputVal.split("").map((item) => item.charCodeAt()).join(`,\u00A0 \u00A0`)} ]`}</Box>
       </Box>
       <Box className='second-icon' sx={{ fontSize: "28px", opacity: 0, position: "absolute", left: "50%", top: "10%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
