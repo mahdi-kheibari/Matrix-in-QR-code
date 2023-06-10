@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 // @mui
 import Container from '@mui/material/Container';
-import { Box, Typography, Button, Stack, Grow } from '@mui/material';
+import { Box, Typography, Button, Stack } from '@mui/material';
 // anime js
 import anime from 'animejs';
 // mock data
@@ -38,7 +37,7 @@ export default function QRPage() {
         { opacity: 1 },
       ],
       duration: 500,
-      delay:500
+      delay: 500
     });
     animation.current.add({
       targets: `.first`,
@@ -60,9 +59,6 @@ export default function QRPage() {
   }, []);
   return (
     <>
-      <Helmet>
-        <title> QR code </title>
-      </Helmet>
       <Container sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <Box className="first" sx={{ width: "425px", height: "380px", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <Box className="zoomIn" sx={{ fontSize: 0, fontWeight: 300 }}>
