@@ -57,12 +57,12 @@ function StepFour({ binaryData, setStep, changeStep, setChangeStep, setDataToMat
   return (
     <Grid container spacing={1} sx={{ mt: 3 }}>
       <Grid item xs={9}>
-        <Box className='example' sx={{ display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid", borderColor: "secondary.main", borderRadius: "10px", height: "100%", width: "100%", opacity: 0 }}>
+        <Box className='example' sx={{ display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid", borderColor: "secondary.main", borderRadius: "10px", width: "100%", opacity: 0,pb:2 }}>
           <Typography variant="h5" sx={{ display: "flex", alignItems: "center", my: 2, mr: "auto", ml: 1, fontWeight: "normal" }}>
             <Iconify icon="ph:info" sx={{ mx: 1 }} />
             <span>example</span>
           </Typography>
-          <Box component={'img'} src='/assets/images/binary_data_example.png' sx={{ px: 2 }} />
+          <Box component={'img'} src='/assets/images/binary_data_example.png' sx={{ px: 2,borderRadius:"6%" }} />
         </Box>
       </Grid>
       <Grid item xs={1}>

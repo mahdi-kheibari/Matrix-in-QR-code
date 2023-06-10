@@ -212,56 +212,59 @@ export default function GeneratePage() {
   }
 
   const handleDefaultConfigImg = () => {
-    configAnimation.current = anime.timeline({
-      autoplay: false,
-      easing: "easeInOutSine"
-    }).add({
-      targets: `.default-config`,
-      keyframes: [
-        { opacity: 0 },
-        { opacity: 1 },
-        { opacity: 0 },
-        { opacity: 1 },
-      ],
-      loop: 4,
-      duration: 1500,
-      delay: 5000
-    })
-    const defaultConfigIndex = [
-      [0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20],
-      [0, 6, 8, 14, 20],
-      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
-      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
-      [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
-      [0, 6, 8, 14, 20],
-      [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 15, 16, 17, 18, 19, 20],
-      [8],
-      [0, 1, 2, 5, 6, 7, 8, 13, 14, 15, 16, 17, 18, 19, 20],
-      [],
-      [6],
-      [],
-      [6],
-      [8],
-      [0, 1, 2, 3, 4, 5, 6, 8],
-      [0, 6, 8],
-      [0, 2, 3, 4, 6],
-      [0, 2, 3, 4, 6],
-      [0, 2, 3, 4, 6, 8],
-      [0, 6, 8, 19, 20],
-      [0, 1, 2, 3, 4, 5, 6, 8, 19, 20],
-    ]
-    defaultConfigIndex.forEach((item, index) => {
-      item.forEach((i) => {
-        setQrMatrix(prev => prev.map((row, indexRow) => {
-          if (indexRow === index) {
-            return row.map((col, indexCol) => indexCol === i ? qrArray[((index + 4) * 4) + 1][((i + 4) * 4) + 1] : col)
-          }
-          return row
-        }))
+    function play() {
+      configAnimation.current = anime.timeline({
+        autoplay: false,
+        easing: "easeInOutSine"
+      }).add({
+        targets: `.default-config`,
+        keyframes: [
+          { opacity: 0 },
+          { opacity: 1 },
+          { opacity: 0 },
+          { opacity: 1 },
+        ],
+        loop: 4,
+        duration: 1500,
+        delay: 5000
       })
-    })
+      const defaultConfigIndex = [
+        [0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20],
+        [0, 6, 8, 14, 20],
+        [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+        [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+        [0, 2, 3, 4, 6, 8, 14, 16, 17, 18, 20],
+        [0, 6, 8, 14, 20],
+        [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 15, 16, 17, 18, 19, 20],
+        [8],
+        [0, 1, 2, 5, 6, 7, 8, 13, 14, 15, 16, 17, 18, 19, 20],
+        [],
+        [6],
+        [],
+        [6],
+        [8],
+        [0, 1, 2, 3, 4, 5, 6, 8],
+        [0, 6, 8],
+        [0, 2, 3, 4, 6],
+        [0, 2, 3, 4, 6],
+        [0, 2, 3, 4, 6, 8],
+        [0, 6, 8, 19, 20],
+        [0, 1, 2, 3, 4, 5, 6, 8, 19, 20],
+      ]
+      defaultConfigIndex.forEach((item, index) => {
+        item.forEach((i) => {
+          setQrMatrix(prev => prev.map((row, indexRow) => {
+            if (indexRow === index) {
+              return row.map((col, indexCol) => indexCol === i ? qrArray[((index + 4) * 4) + 1][((i + 4) * 4) + 1] : col)
+            }
+            return row
+          }))
+        })
+      })
+      configAnimation.current.play()
+    }
     return {
-      play: () => configAnimation.current.play(),
+      play: () => play(),
       pause: () => {
         configAnimation.current = anime({
           autoplay: true,
@@ -278,11 +281,15 @@ export default function GeneratePage() {
       easing: "easeInOutSine"
     }).add({
       targets: `.mask-config`,
-      opacity: [0, 1],
-      loop: true,
-      direction: "alternate",
-      duration: 1500,
-      delay: 1000
+      keyframes: [
+        { opacity: 0 },
+        { opacity: 1 },
+        { opacity: 0 },
+        { opacity: 1 },
+      ],
+      loop: 4,
+      duration: 2000,
+      delay: 2000
     })
     return {
       play: () => configAnimation.current.play(),
@@ -318,7 +325,6 @@ export default function GeneratePage() {
       return row
     }
     let newQrMatrix = [...qrMatrix]
-    console.log(newBinaryData);
     while (counter < newBinaryData.join("").length) {
       if (startRow !== horizontalMatrix[horizontalMatrixIndex]) {
         for (let i = 0; i < 2; i += 1) {
