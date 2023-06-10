@@ -81,11 +81,11 @@ function StepOne({ inputVal, binaryData, setStep, changeStep, setChangeStep }) {
       </Box>
       <Box className='binary-code' sx={{ fontSize: { xs: "20px", md: "25px" }, opacity: 0, position: "absolute", left: "50%", top: "15%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ marginRight: "10px", flexShrink: 0 }}>{`Binary code: `}</div>
-        <Box sx={{ fontSize: { xs: "65px", md: "85px" }, fontWeight: 300 }}>
+        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"["}
         </Box>
-        <Box sx={{ fontSize: { xs: "18px", md: "22px" }, mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
-        <Box sx={{ fontSize: { xs: "65px", md: "85px" }, fontWeight: 300 }}>
+        <Box sx={{ fontSize: binaryData.length > 6 ? { xs: "15px", md: "18px" } : { xs: "18px", md: "22px" }, mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
+        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"]"}
         </Box>
       </Box>

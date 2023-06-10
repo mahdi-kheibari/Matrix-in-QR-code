@@ -6,10 +6,13 @@ import { Box, Stack, Grid } from '@mui/material'
 import anime from 'animejs';
 // components
 import Iconify from '../../components/iconify/Iconify'
+// custom hook
+import useResponsive from '../../hooks/useResponsive';
 
 function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
   const animation = useRef(null);
   const endAnimation = useRef(null);
+  const mdAndDown = useResponsive('down', 'md')
 
   useEffect(() => {
     if (changeStep) {
@@ -23,9 +26,9 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
           duration: 300,
         })
         .add({
-          targets: `.bracket`,
-          translateY: (el, i) => i < 4 ? -220 + (i * 110) : -440 + (i * 110),
-          translateX: (el, i) => i < 4 ? 710 - (i + 1) * 170 : 710 - (i - 3) * 170,
+          targets: `.binary-data`,
+          translateY: (el, i) => i < 4 ? -196 + (i * 196) : i < 8 ? ((i - 3) * -196) + ((i - 1) * 196) : ((i - 7) * -196) + ((i - 1) * 196),
+          translateX: (el, i) => i < 4 ? 710 - (i + 1) * 170 : i < 8 ? 710 - (i - 3) * 170 : 710 - (i - 7) * 170,
           scale: [1, 0.6],
           opacity: [1, 0.5],
           duration: 1000,
@@ -43,7 +46,7 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
         .add({
           targets: `.binary-code`,
           opacity: 1,
-          top: ["55%", "5%"],
+          top: ["55%", binaryData.length > 6 ? "8%" : "5%"],
           duration: 1500,
         })
         .add({
@@ -53,45 +56,56 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
           duration: 1500,
         })
         .add({
-          targets: `.bracket`,
+          targets: `.binary-data .bracket`,
+          fontSize: mdAndDown ? "70px" : "120px",
           opacity: [0, 1],
-          width: ["0%", "100%"],
-          duration: 1500,
-          delay: (el, i) => 50 * (i + 1)
+          duration: 500
         })
         .add({
-          targets: `.bracket-data`,
-          fontSize: ["0", "14px"],
-          duration: 1000,
-          delay: (el, i) => 50 * (i + 1)
+          targets: `.binary-data .data`,
+          fontSize: ["0", mdAndDown ? "12.5px" : "18px"],
+          lineHeight: ["0", mdAndDown ? "12.5px" : "22px"],
+          opacity: [0, 1],
+          duration: 1300
         })
     }
   }, [binaryData]);
   return (
     <Stack direction={"column"} spacing={4} justifyContent={"center"} alignItems={"center"} height={"100%"} position={'relative'} mt={4}>
       <Box className='binary-code' sx={{ opacity: 0, position: "absolute", left: "50%", top: "15%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontSize: "25px", marginRight: "10px", flexShrink: 0 }}>{`Binary code: `}</div>
-        <Box sx={{ fontSize: "85px", fontWeight: 300 }}>
+        <Box sx={{ fontSize: { xs: "20px", md: "25px" }, mr: "10px", flexShrink: 0 }}>{`Binary code: `}</Box>
+        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"["}
         </Box>
-        <Box sx={{ fontSize: "22px", mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
-        <Box sx={{ fontSize: "85px", fontWeight: 300 }}>
+        <Box sx={{ fontSize: binaryData.length > 6 ? { xs: "15px", md: "18px" } : { xs: "18px", md: "22px" }, mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
+        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"]"}
         </Box>
       </Box>
       <Box className='icon' sx={{ fontSize: "28px", opacity: 0, position: "absolute", left: "50%", top: "10%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: "3rem", height: "3rem", mx: "auto" }} />
+        <Iconify icon="icon-park-twotone:down-two" sx={{ my: { xs: 1, md: 2 }, width: { xs: "1.5rem", md: "3rem" }, height: { xs: "1.5rem", md: "3rem" }, mx: "auto" }} />
       </Box>
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         {binaryData.map((item, index) => (
-          <Grid item xs={3} key={index} sx={{ width: "192px", height: "192px" }}>
-            <Grid container className='bracket' spacing={0} sx={{ backgroundImage: "url('/assets/icons/bracket.svg')", backgroundSize: "contain", backgroundRepeat: "no-repeat", height: "100%", alignContent: "center", backgroundPosition: "center" }}>
-              {item.split("").map((i, innerIndex) =>
-                <Grid key={innerIndex} item xs={6} sx={{ height: "fit-content", pt: "0 !important" }}>
-                  <Box className='bracket-data' sx={{ ml: 4.5, mr: 1, fontSize: "14px" }}>{i}</Box>
-                </Grid>
-              )}
-            </Grid>
+          <Grid item xs={3} key={index}>
+            <Box className="binary-data" sx={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 2 }}>
+              <Box className='bracket' sx={{ fontSize: { xs: "70px", md: "150px" }, fontWeight: 300 }}>
+                {"["}
+              </Box>
+              <Box sx={{ position: "relative" }}>
+                {item.match(/.{1,2}/g).map((secondItem, secondIndex) => {
+                  const data = secondItem.split("").map((i, thirdIndex) => <Box component={'span'} key={thirdIndex} >{`${i}${thirdIndex !== secondItem.length - 1 ? "\u00A0 \u00A0 \u00A0 \u00A0" : ""}`}</Box>)
+                  return (
+                    <Box key={index} className='data'>
+                      {data}
+                    </Box>
+                  )
+                })}
+              </Box>
+              <Box className='bracket' sx={{ fontSize: { xs: "70px", md: "150px" }, fontWeight: 300 }}>
+                {"]"}
+              </Box>
+            </Box>
           </Grid>
         ))}
       </Grid>

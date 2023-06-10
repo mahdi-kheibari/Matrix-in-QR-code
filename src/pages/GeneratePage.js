@@ -434,9 +434,9 @@ export default function GeneratePage() {
           </Grid>
           <Grid item xs={12} md={7}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative" }}>
+              <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative", fontSize: { xs: "18px", md: "25px" } }}>
                 <span>{`Step ${step}: `}</span>
-                <Box className='step-title' ref={stepTitle} sx={{ fontSize: "25px", ml: 1, position: "relative" }}>
+                <Box className='step-title' ref={stepTitle} sx={{ fontSize: { xs: "18px", md: "25px" }, ml: 1, position: "relative" }}>
                   <Box component={'span'} className="line" sx={{ position: "absolute", top: 0, left: 0, opacity: 0, height: "100%", width: "3px", backgroundColor: "#fff", transformOrigin: "0 50%" }} />
                   {STEPS.find(item => item.step === step).title.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
                 </Box>
