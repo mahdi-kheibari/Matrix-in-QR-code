@@ -27,8 +27,8 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
         })
         .add({
           targets: `.binary-data`,
-          translateY: (el, i) => i < 4 ? -196 + (i * 196) : i < 8 ? ((i - 3) * -196) + ((i - 1) * 196) : ((i - 7) * -196) + ((i - 1) * 196),
-          translateX: (el, i) => i < 4 ? 710 - (i + 1) * 170 : i < 8 ? 710 - (i - 3) * 170 : 710 - (i - 7) * 170,
+          translateY: (el, i) => mdAndDown ? i < 4 ? -90 + (i * 90) : i < 8 ? ((i - 3) * -90) + ((i - 1) * 90) : ((i - 7) * -90) + ((i - 1) * 90) : i < 4 ? -196 + (i * 196) : i < 8 ? ((i - 3) * -196) + ((i - 1) * 196) : ((i - 7) * -196) + ((i - 1) * 196),
+          translateX: (el, i) => mdAndDown ? i < 4 ? 376 - (i + 1) * 90 : i < 8 ? 376 - (i - 3) * 90 : 376 - (i - 7) * 90 : i < 4 ? 710 - (i + 1) * 170 : i < 8 ? 710 - (i - 3) * 170 : 710 - (i - 7) * 170,
           scale: [1, 0.6],
           opacity: [1, 0.5],
           duration: 1000,

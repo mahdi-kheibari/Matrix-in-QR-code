@@ -80,8 +80,8 @@ export default function GeneratePage() {
         })
         .add({
           targets: `.qr-canvas`,
-          width: [0, mdAndDown ? 110 : 230],
-          height: mdAndDown ? 110 : 230,
+          width: [0, mdAndDown ? 115 : 230],
+          height: mdAndDown ? 115 : 230,
           duration: 1500,
         })
       otherElAnimation.current.play()
@@ -150,8 +150,8 @@ export default function GeneratePage() {
   // generate QR code matrix to canvas
   const generateQRCodeCanvas = (qrArray, canvas) => {
     const context = canvas.getContext('2d');
-    const cellSize = 10;
-    const margin = 10;
+    const cellSize = mdAndDown ? 5 : 10;
+    const margin = mdAndDown ? 5 : 10;
 
     const qrSize = qrArray.length;
     const canvasSize = qrSize * cellSize + 2 * margin;
@@ -425,7 +425,7 @@ export default function GeneratePage() {
               <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", flexShrink: 0 }}>
                 <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
                 <Box className='mask-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
-                <canvas ref={canvasRef} style={{ width: { xs: "110px", md: "230px" }, height: { xs: "110px", md: "230px" } }} />
+                <canvas ref={canvasRef} style={{ width: { xs: "115px", md: "230px" }, height: { xs: "115px", md: "230px" } }} />
               </Box>
             </Box>
           </Grid>
