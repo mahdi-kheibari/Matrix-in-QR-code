@@ -8,6 +8,8 @@ import { Box, Button, Divider, Grid, Stack, TextField, Typography } from '@mui/m
 import anime from 'animejs';
 // components
 import Iconify from '../components/iconify/Iconify'
+// custom hooks
+import useResponsive from '../hooks/useResponsive';
 
 
 export default function ScanPage() {
@@ -17,6 +19,7 @@ export default function ScanPage() {
   const textAnimation = useRef(null)
   const [preview, setPreview] = useState("");
   const [result, setResult] = useState(null);
+  const mdAndDown = useResponsive('down', 'md')
 
   useEffect(() => {
     if (preview) {
@@ -46,33 +49,17 @@ export default function ScanPage() {
         })
         .add({
           targets: `.preview`,
-          translateX: -400,
-          translateY: 150,
-          duration: 1000,
-        })
-        .add({
-          targets: `.divider-2`,
-          opacity: [0, 1],
+          translateX: mdAndDown ? 0 : -400,
+          translateY: mdAndDown ? 0 : 150,
+          scale: mdAndDown ? [1, 0.5] : 1,
           duration: 1000,
         })
         .add({
           targets: `.divider`,
-          height: ["0px", "600px"],
+          height: mdAndDown ? "initial" : ["0px", "600px"],
+          width: mdAndDown ? [0, "100%"] : "initial",
           duration: 1000,
           complete: () => sectionTitleAnime()
-        })
-        .add({
-          targets: `.bracket`,
-          opacity: [0, 1],
-          width: ["0%", "100%"],
-          duration: 1500,
-          delay: (el, i) => 50 * (i + 1)
-        })
-        .add({
-          targets: `.bracket-data`,
-          fontSize: ["0", "14px"],
-          duration: 1000,
-          delay: (el, i) => 50 * (i + 1)
         })
     }
   }, [preview]);
@@ -99,7 +86,7 @@ export default function ScanPage() {
         targets: '.step-title .letter',
         opacity: [0, 1],
         easing: "easeOutExpo",
-        duration: 600,
+        duration: 300,
         offset: '-=775',
         delay: (el, i) => 34 * (i + 1)
       })
@@ -108,7 +95,25 @@ export default function ScanPage() {
         scaleY: [1, 0],
         opacity: [1, 0.5],
         easing: "easeOutExpo",
-        duration: 700
+        duration: 500
+      })
+      .add({
+        targets: `.divider-2`,
+        width: [0, "100%"],
+        duration: 500,
+      })
+      .add({
+        targets: `.binary-data .bracket`,
+        fontSize: mdAndDown ? "70px" : "120px",
+        opacity: [0, 1],
+        duration: 300
+      })
+      .add({
+        targets: `.binary-data .data`,
+        fontSize: ["0", mdAndDown ? "12.5px" : "18px"],
+        lineHeight: ["0", mdAndDown ? "12.5px" : "22px"],
+        opacity: [0, 1],
+        duration: 1000
       })
     textAnimation.current.play()
   }
@@ -143,7 +148,6 @@ export default function ScanPage() {
         context.drawImage(img, 0, 0);
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height);
-        console.log(code);
         if (code) {
           setResult({
             content: code.data,
@@ -173,7 +177,7 @@ export default function ScanPage() {
         <Box component={'section'} sx={{ my: 2 }}>
           {!preview ? (
             <Stack className='input' direction={"row"} spacing={5} alignItems={"baseline"}>
-              <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important" }}> Upload your QR code : </Box>
+              <Box sx={{ fontSize: "20px", fontWeight: "bold", mb: "20px !important", flexShrink: 0 }}> Upload your QR code : </Box>
               <Button variant="outlined" color="secondary" sx={{ mb: "20px" }} size='large' onClick={() => uploadInputRef.current.click()} disabled={preview || false}>
                 <input
                   ref={uploadInputRef}
@@ -192,18 +196,35 @@ export default function ScanPage() {
           )}
         </Box >
         {result && <Grid className='info' container component={'section'} sx={{ my: 2, opacity: 0 }}>
-          <Grid item xs={4} />
-          <Grid item xs={1} sx={{ display: "flex", justifyContent: "center" }}>
-            <Divider className='divider' orientation='vertical' />
+          <Grid item xs={12} md={4} />
+          <Grid item xs={12} md={1} sx={{ display: "flex", justifyContent: "center", my: 1, mt: { xs: "230px", md: "initial" } }}>
+            <Divider className='divider' orientation={mdAndDown ? 'horizontal' : 'vertical'} />
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={12} md={7}>
+            <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative", mr: "auto", ml: 1 }}>
+              <Box className='step-title' sx={{ fontSize: "25px", ml: 1, position: "relative", my: 2 }}>
+                {`Result: `.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
+              </Box>
+            </Typography>
+            <Box sx={{ display: "flex", justifyItems: "center" }}>
+              <TextField
+                value={result.content}
+                variant='outlined'
+                color='secondary'
+                sx={{ mx: "auto", "& input": { py: 3, fontSize: "25px", color: "secondary.main" }, }}
+                inputProps={{
+                  readOnly: true,
+                }}
+              />
+            </Box>
+            <Divider className='divider-2' sx={{ my: 2 }} />
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", border: "1px solid", borderColor: "secondary.main", borderRadius: "10px", width: "100%", pt: 2 }}>
               <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative", mr: "auto", ml: 1 }}>
                 <Box className='step-title' sx={{ fontSize: "25px", ml: 1, position: "relative" }}>
                   {`QR code info: `.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
                 </Box>
               </Typography>
-              <Box sx={{ display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center", p: 2 }}>
+              <Box sx={{ display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center", p: 2, flexWrap: "wrap" }}>
                 <Typography variant="h5" sx={{ display: "flex", alignItems: "center", my: 2, mr: "auto", ml: 1, fontWeight: "normal" }}>
                   <Iconify icon="ph:info" sx={{ mx: 1 }} />
                   <span>{`Version : ${result.version}`}</span>
@@ -220,36 +241,30 @@ export default function ScanPage() {
                 {`Binary Data: `.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
               </Box>
             </Typography>
-            <Grid container spacing={0.5}>
+            <Grid container spacing={2}>
               {result.binaryData.map((item, index) => (
-                <Grid item xs={3} key={index} sx={{ width: "192px", height: "192px" }}>
-                  <Grid container className='bracket' spacing={0} sx={{ backgroundImage: "url('/assets/icons/bracket.svg')", backgroundSize: "contain", backgroundRepeat: "no-repeat", height: "100%", alignContent: "center", backgroundPosition: "center" }}>
-                    {item.split("").map((i, innerIndex) =>
-                      <Grid key={innerIndex} item xs={6} sx={{ height: "fit-content", pt: "0 !important" }}>
-                        <Box className='bracket-data' sx={{ ml: 4.5, mr: 1, fontSize: "14px" }}>{i}</Box>
-                      </Grid>
-                    )}
-                  </Grid>
+                <Grid item xs={3} key={index}>
+                  <Box className="binary-data" sx={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 2 }}>
+                    <Box className='bracket' sx={{ fontSize: { xs: "70px", md: "150px" }, fontWeight: 300 }}>
+                      {"["}
+                    </Box>
+                    <Box sx={{ position: "relative" }}>
+                      {item.match(/.{1,2}/g).map((secondItem, secondIndex) => {
+                        const data = secondItem.split("").map((i, thirdIndex) => <Box component={'span'} key={thirdIndex} >{`${i}${thirdIndex !== secondItem.length - 1 ? "\u00A0 \u00A0 \u00A0 \u00A0" : ""}`}</Box>)
+                        return (
+                          <Box key={secondIndex} className='data'>
+                            {data}
+                          </Box>
+                        )
+                      })}
+                    </Box>
+                    <Box className='bracket' sx={{ fontSize: { xs: "70px", md: "150px" }, fontWeight: 300 }}>
+                      {"]"}
+                    </Box>
+                  </Box>
                 </Grid>
               ))}
             </Grid>
-            <Divider className='divider-2' sx={{ mt: 2 }} />
-            <Typography variant="h3" fontWeight={500} sx={{ display: "flex", alignItems: "center", position: "relative", mr: "auto", ml: 1 }}>
-              <Box className='step-title' sx={{ fontSize: "25px", ml: 1, position: "relative" }}>
-                {`Result: `.split("").map((item, i) => (<Box component={'span'} key={i} className='letter' sx={{ transformOrigin: "0 0" }}>{item}</Box>))}
-              </Box>
-            </Typography>
-            <Box sx={{ display: "flex", justifyItems: "center" }}>
-              <TextField
-                value={result.content}
-                variant='outlined'
-                color='secondary'
-                sx={{ mx: "auto", "& input": { py: 3, fontSize: "25px", color: "secondary.main" }, }}
-                inputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Box>
           </Grid>
         </Grid>
         }
