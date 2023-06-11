@@ -1,14 +1,14 @@
 {
-  "short_name": "Minimal App",
-  "name": "React Material Minimal UI Kit",
+  "short_name": "Mathmatic project",
+  "name": "Matrix in QR code",
   "icons": [
     {
-      "src": "favicon/android-chrome-192x192.png",
-      "sizes": "192x192",
+      "src": "favicon/qr-code-32.png",
+      "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "favicon/android-chrome-512x512.png",
+      "src": "favicon/qr-code-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

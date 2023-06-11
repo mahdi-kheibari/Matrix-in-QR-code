@@ -83,7 +83,7 @@ function StepFour({ binaryData, setStep, changeStep, setChangeStep, setDataToMat
                   {item.match(/.{1,2}/g).map((secondItem, secondIndex) => {
                     const data = secondItem.split("").map((i, thirdIndex) => <Box component={'span'} sx={{ fontSize: { xs: "8px", md: "initial" } }} key={thirdIndex} >{`${i}${thirdIndex !== secondItem.length - 1 ? "\u00A0 \u00A0 \u00A0 \u00A0" : ""}`}</Box>)
                     return (
-                      <Box key={index}>
+                      <Box key={secondIndex}>
                         {data}
                       </Box>
                     )

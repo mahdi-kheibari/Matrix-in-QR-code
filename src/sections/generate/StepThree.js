@@ -12,6 +12,7 @@ function StepThree({ binaryData, handleDefaultConfigImg, setStep, changeStep, se
   const stepTitleAnimation = useRef(null);
   const mdAndDown = useResponsive('down', 'md')
   useEffect(() => {
+    handleDefaultConfigImg().setConfig()
     stepTitleAnimation.current = anime({
       targets: '.text-wrapper .letter',
       rotateY: [-90, 0],
@@ -131,7 +132,7 @@ function StepThree({ binaryData, handleDefaultConfigImg, setStep, changeStep, se
                   {item.match(/.{1,2}/g).map((secondItem, secondIndex) => {
                     const data = secondItem.split("").map((i, thirdIndex) => <Box component={'span'} sx={{ fontSize: { xs: "8px", md: "initial" } }} key={thirdIndex} >{`${i}${thirdIndex !== secondItem.length - 1 ? "\u00A0 \u00A0 \u00A0 \u00A0" : ""}`}</Box>)
                     return (
-                      <Box key={index} className='data'>
+                      <Box key={secondIndex} className='data'>
                         {data}
                       </Box>
                     )

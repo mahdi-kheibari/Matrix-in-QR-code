@@ -46,6 +46,7 @@ export default function GeneratePage() {
   const textAnimation = useRef(null);
   const otherElAnimation = useRef(null);
   const configAnimation = useRef(null);
+  const defaultConfigRef = useRef(null);
 
   useEffect(() => {
     if (stepTitle.current) {
@@ -214,22 +215,7 @@ export default function GeneratePage() {
   }
 
   const handleDefaultConfigImg = () => {
-    function play() {
-      configAnimation.current = anime.timeline({
-        autoplay: false,
-        easing: "easeInOutSine"
-      }).add({
-        targets: `.default-config`,
-        keyframes: [
-          { opacity: 0 },
-          { opacity: 1 },
-          { opacity: 0 },
-          { opacity: 1 },
-        ],
-        loop: 4,
-        duration: 1500,
-        delay: 5000
-      })
+    function setConfig() {
       const defaultConfigIndex = [
         [0, 1, 2, 3, 4, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20],
         [0, 6, 8, 14, 20],
@@ -263,6 +249,23 @@ export default function GeneratePage() {
           }))
         })
       })
+    }
+    function play() {
+      configAnimation.current = anime.timeline({
+        autoplay: false,
+        easing: "easeInOutSine"
+      }).add({
+        targets: `.default-config`,
+        keyframes: [
+          { opacity: 0 },
+          { opacity: 1 },
+          { opacity: 0 },
+          { opacity: 1 },
+        ],
+        loop: 4,
+        duration: 1500,
+        delay: 1000
+      })
       configAnimation.current.play()
     }
     return {
@@ -274,7 +277,9 @@ export default function GeneratePage() {
           opacity: [1, 0],
           duration: 1500
         })
-      }
+        defaultConfigRef.current.style.visibility = "hidden"
+      },
+      setConfig
     }
   }
   const handleMaskConfigImg = () => {
@@ -423,7 +428,7 @@ export default function GeneratePage() {
                 <Iconify icon="icon-park-twotone:down-two" sx={{ my: 2, width: { xs: "1.5rem", md: "3rem" }, height: { xs: "1.5rem", md: "3rem" }, mx: { md: "auto" }, transform: { xs: "rotate(-90deg)", md: "initial" } }} />
               </Box>
               <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", flexShrink: 0 }}>
-                <Box className='default-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
+                <Box className='default-config' ref={defaultConfigRef} component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
                 <Box className='mask-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
                 <canvas ref={canvasRef} style={{ width: { xs: "115px", md: "230px" }, height: { xs: "115px", md: "230px" } }} />
               </Box>
