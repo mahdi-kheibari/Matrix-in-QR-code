@@ -6,6 +6,8 @@ import { Box, Typography } from '@mui/material'
 import anime from 'animejs'
 // components
 import Iconify from '../../components/iconify/Iconify'
+// images
+import maskPatterns from '../../assets/images/mask_patterns.png';
 
 function StepSix({ setStep, changeStep, setChangeStep, setAllDataToMatrix, handleMaskConfigImg }) {
   const animation = useRef(null)
@@ -44,7 +46,7 @@ function StepSix({ setStep, changeStep, setChangeStep, setAllDataToMatrix, handl
         <Iconify icon="ph:info" sx={{ mx: 1 }} />
         <span>Mask patterns</span>
       </Typography>
-      <Box component={'img'} src='/assets/images/mask_patterns.png' sx={{ borderRadius: "5px", opacity: 0 }} />
+      <Box component={'img'} src={maskPatterns} sx={{ borderRadius: "5px", opacity: 0 }} />
     </Box>
   )
 }

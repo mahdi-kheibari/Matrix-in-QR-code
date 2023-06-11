@@ -8,6 +8,8 @@ import anime from 'animejs'
 import Iconify from '../../components/iconify/Iconify'
 // custom hooks
 import useResponsive from '../../hooks/useResponsive'
+// images
+import binaryDataExample from '../../assets/images/binary_data_example.png';
 
 function StepFour({ binaryData, setStep, changeStep, setChangeStep, setDataToMatrix }) {
   const animation = useRef(null)
@@ -65,7 +67,7 @@ function StepFour({ binaryData, setStep, changeStep, setChangeStep, setDataToMat
             <Iconify icon="ph:info" sx={{ mx: 1 }} />
             <span>example</span>
           </Typography>
-          <Box component={'img'} src='/assets/images/binary_data_example.png' sx={{ px: 2, borderRadius: "6%" }} />
+          <Box component={'img'} src={binaryDataExample} sx={{ px: 2, borderRadius: "6%" }} />
         </Box>
       </Grid>
       <Grid item xs={1}>

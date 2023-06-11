@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 // routes
 import Router from './routes';
@@ -10,11 +10,11 @@ import ThemeProvider from './theme';
 export default function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HashRouter>
         <ThemeProvider>
           <Router />
         </ThemeProvider>
-      </BrowserRouter>
+      </HashRouter>
     </HelmetProvider>
   );
 }

@@ -6,6 +6,9 @@ import { Box, Typography, Grid } from '@mui/material'
 import anime from 'animejs'
 // components
 import Iconify from '../../components/iconify/Iconify'
+// images
+import errorCorrectionEx1 from '../../assets/images/error_correction_ex_1.jpg';
+import errorCorrectionEx2 from '../../assets/images/error_correction_ex_2.jpg';
 
 function StepFive({ setStep, changeStep, setChangeStep, setAllDataToMatrix, setDataToMatrix }) {
   const animation = useRef(null)
@@ -43,10 +46,10 @@ function StepFive({ setStep, changeStep, setChangeStep, setAllDataToMatrix, setD
       </Typography>
       <Grid container spacing={0}>
         <Grid item xs={6}>
-          <Box component={'img'} src='/assets/images/error_correction_ex_1.jpg' sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
+          <Box component={'img'} src={errorCorrectionEx1} sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
         </Grid>
         <Grid item xs={6}>
-          <Box component={'img'} src='/assets/images/error_correction_ex_2.jpg' sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
+          <Box component={'img'} src={errorCorrectionEx2} sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
         </Grid>
       </Grid>
     </Box>

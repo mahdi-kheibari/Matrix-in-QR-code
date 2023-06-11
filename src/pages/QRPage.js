@@ -9,6 +9,10 @@ import anime from 'animejs';
 import { animationData } from '../_mock/qrData';
 // custom hooks
 import useResponsive from '../hooks/useResponsive';
+// images
+import animationSvg from '../assets/images/animation.svg';
+import generateSvg from '../assets/images/generate.svg';
+import scanGif from '../assets/images/scan.gif';
 
 export default function QRPage() {
   const animation = useRef(null);
@@ -76,7 +80,7 @@ export default function QRPage() {
                 </Box>
               )
             })}
-            <Box component={'img'} className="qrcode" src='/assets/images/animation.svg' width={'100%'} height={'100%'} sx={{ position: "absolute", top: 0, left: 0, scale: "1.5", opacity: 0, objectFit: "contain" }} />
+            <Box component={'img'} className="qrcode" src={animationSvg} width={'100%'} height={'100%'} sx={{ position: "absolute", top: 0, left: 0, scale: "1.5", opacity: 0, objectFit: "contain" }} />
           </Box>
           <Box className="zoomIn" sx={{ fontSize: 0, fontWeight: 300 }}>
             {"]"}
@@ -95,7 +99,7 @@ export default function QRPage() {
                 to={"generate"}
                 sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1, width: "100%" }}
               >
-                <Box component={'img'} src='/assets/images/generate.svg' alt='generate' width={65} height={65} sx={{ my: 1 }} />
+                <Box component={'img'} src={generateSvg} alt='generate' width={65} height={65} sx={{ my: 1 }} />
                 Generating
               </Button>
             </Grid>
@@ -107,7 +111,7 @@ export default function QRPage() {
                 to={"scan"}
                 sx={{ display: "flex", flexDirection: "column", fontWeight: "normal", fontSize: "20px", flexGrow: 1, width: "100%" }}
               >
-                <Box component={'img'} src='/assets/images/scan.gif' alt='generate' width={65} height={65} sx={{ my: 1 }} />
+                <Box component={'img'} src={scanGif} alt='generate' width={65} height={65} sx={{ my: 1 }} />
                 Scaning
               </Button>
             </Grid>

@@ -3,6 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Button, Typography, Container, Box } from '@mui/material';
+// images
+import illustration404 from '../assets/illustrations/illustration_404.svg';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +40,7 @@ export default function Page404() {
 
           <Box
             component="img"
-            src="/assets/illustrations/illustration_404.svg"
+            src={illustration404}
             sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
           />
 
