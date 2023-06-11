@@ -92,3 +92,9 @@ Matrices can also be manipulated to create different types of QR codes. Here are
 - Changing the values of some elements in a mask pattern matrix can alter the appearance of a QR code. For example, changing some elements from 0 to 1 or vice versa can create different patterns or shapes on a QR code.
 - Changing the values of some elements in a format information matrix can alter the readability of a QR code. For example, changing some elements from 0 to 1 or vice versa can change the error correction level or mask pattern used for a QR code, which may affect its scanning performance.
 - Changing the values of some elements in a transformation matrix can alter the perspective of a QR code. For example, changing some elements can create different effects such as rotation, scaling, shearing, etc. on a QR code.
+
+## What Does This Repo Do
+
+The code in this repository was written for a math project; the course was held in the Ferdowsi University of Mashhad by Dr. Rajabali Kamyabi Gol. We studied the usage of matrices in QR codes for our term project.
+This website generates and reads ver1 QR codes and is written for educational purposes.
+Hope you enjoy it.
