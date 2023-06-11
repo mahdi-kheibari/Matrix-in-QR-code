@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Matrix-in-QR-code/static/css/main.351da438.css",
-    "main.js": "/Matrix-in-QR-code/static/js/main.4b1b4d39.js",
+    "main.js": "/Matrix-in-QR-code/static/js/main.bf4a3ca1.js",
     "static/js/496.443287e5.chunk.js": "/Matrix-in-QR-code/static/js/496.443287e5.chunk.js",
     "static/media/scan.gif": "/Matrix-in-QR-code/static/media/scan.afd2c729269f60bfc23c.gif",
     "static/media/binary_data_example.png": "/Matrix-in-QR-code/static/media/binary_data_example.5717950ca15b8f8d52ec.png",
@@ -13,11 +13,11 @@
     "static/media/illustration_404.svg": "/Matrix-in-QR-code/static/media/illustration_404.e265cb33400831b9ab3259ba28222e1f.svg",
     "index.html": "/Matrix-in-QR-code/index.html",
     "main.351da438.css.map": "/Matrix-in-QR-code/static/css/main.351da438.css.map",
-    "main.4b1b4d39.js.map": "/Matrix-in-QR-code/static/js/main.4b1b4d39.js.map",
+    "main.bf4a3ca1.js.map": "/Matrix-in-QR-code/static/js/main.bf4a3ca1.js.map",
     "496.443287e5.chunk.js.map": "/Matrix-in-QR-code/static/js/496.443287e5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.351da438.css",
-    "static/js/main.4b1b4d39.js"
+    "static/js/main.bf4a3ca1.js"
   ]
 }
