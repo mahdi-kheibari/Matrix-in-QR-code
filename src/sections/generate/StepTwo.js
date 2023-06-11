@@ -46,13 +46,13 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
         .add({
           targets: `.binary-code`,
           opacity: 1,
-          top: ["55%", binaryData.length > 6 ? "8%" : "5%"],
+          top: ["55%", binaryData.length > 4 ? "10%" : "5%"],
           duration: 1500,
         })
         .add({
           targets: `.icon`,
           opacity: 1,
-          top: ["8%", "15%"],
+          top: ["8%", "17%"],
           duration: 1500,
         })
         .add({
@@ -74,18 +74,18 @@ function StepTwo({ binaryData, setStep, changeStep, setChangeStep }) {
     <Stack direction={"column"} spacing={4} justifyContent={"center"} alignItems={"center"} height={"100%"} position={'relative'} mt={4}>
       <Box className='binary-code' sx={{ opacity: 0, position: "absolute", left: "50%", top: "15%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Box sx={{ fontSize: { xs: "20px", md: "25px" }, mr: "10px", flexShrink: 0 }}>{`Binary code: `}</Box>
-        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
+        <Box sx={{ fontSize: binaryData.length > 4 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"["}
         </Box>
-        <Box sx={{ fontSize: binaryData.length > 6 ? { xs: "15px", md: "18px" } : { xs: "18px", md: "22px" }, mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
-        <Box sx={{ fontSize: binaryData.length > 6 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
+        <Box sx={{ fontSize: binaryData.length > 4 ? { xs: "13px", sm: "15px", md: "18px" } : { xs: "18px", md: "22px" }, mx: "auto" }}>{`${binaryData.join(`,\u00A0 \u00A0`)}`}</Box>
+        <Box sx={{ fontSize: binaryData.length > 4 ? "120px" : { xs: "65px", md: "85px" }, fontWeight: 300 }}>
           {"]"}
         </Box>
       </Box>
       <Box className='icon' sx={{ fontSize: "28px", opacity: 0, position: "absolute", left: "50%", top: "10%", transform: "translate(-50%,-50%)", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Iconify icon="icon-park-twotone:down-two" sx={{ my: { xs: 1, md: 2 }, width: { xs: "1.5rem", md: "3rem" }, height: { xs: "1.5rem", md: "3rem" }, mx: "auto" }} />
       </Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ mt: { xs: 4, md: "initial" } }}>
         {binaryData.map((item, index) => (
           <Grid item xs={3} key={index}>
             <Box className="binary-data" sx={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 2 }}>
