@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Matrix-in-QR-code/static/css/main.351da438.css",
+    "main.js": "/Matrix-in-QR-code/static/js/main.4b1b4d39.js",
+    "static/js/496.443287e5.chunk.js": "/Matrix-in-QR-code/static/js/496.443287e5.chunk.js",
+    "static/media/scan.gif": "/Matrix-in-QR-code/static/media/scan.afd2c729269f60bfc23c.gif",
+    "static/media/binary_data_example.png": "/Matrix-in-QR-code/static/media/binary_data_example.5717950ca15b8f8d52ec.png",
+    "static/media/error_correction_ex_2.jpg": "/Matrix-in-QR-code/static/media/error_correction_ex_2.1b535a76f39c38d51948.jpg",
+    "static/media/error_correction_ex_1.jpg": "/Matrix-in-QR-code/static/media/error_correction_ex_1.db2732f80fe452ffe10a.jpg",
+    "static/media/generate.svg": "/Matrix-in-QR-code/static/media/generate.9a0b4af5fc707d0226e0821ed12869df.svg",
+    "static/media/animation.svg": "/Matrix-in-QR-code/static/media/animation.d34bbe0e0fa22332a5d9bb188dec3ce2.svg",
+    "static/media/mask_patterns.png": "/Matrix-in-QR-code/static/media/mask_patterns.e0573741a4b57a7a91aa.png",
+    "static/media/illustration_404.svg": "/Matrix-in-QR-code/static/media/illustration_404.e265cb33400831b9ab3259ba28222e1f.svg",
+    "index.html": "/Matrix-in-QR-code/index.html",
+    "main.351da438.css.map": "/Matrix-in-QR-code/static/css/main.351da438.css.map",
+    "main.4b1b4d39.js.map": "/Matrix-in-QR-code/static/js/main.4b1b4d39.js.map",
+    "496.443287e5.chunk.js.map": "/Matrix-in-QR-code/static/js/496.443287e5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.351da438.css",
+    "static/js/main.4b1b4d39.js"
+  ]
+}
