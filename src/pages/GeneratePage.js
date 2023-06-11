@@ -47,6 +47,7 @@ export default function GeneratePage() {
   const otherElAnimation = useRef(null);
   const configAnimation = useRef(null);
   const defaultConfigRef = useRef(null);
+  const maskConfigRef = useRef(null);
 
   useEffect(() => {
     if (stepTitle.current) {
@@ -307,6 +308,7 @@ export default function GeneratePage() {
           opacity: [1, 0],
           duration: 1500
         })
+        maskConfigRef.current.style.visibility = "hidden"
       }
     }
   }
@@ -429,7 +431,7 @@ export default function GeneratePage() {
               </Box>
               <Box className='qr-canvas' sx={{ width: "0", height: "0", overflow: "hidden", position: "relative", flexShrink: 0 }}>
                 <Box className='default-config' ref={defaultConfigRef} component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_config.png' />
-                <Box className='mask-config' component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
+                <Box className='mask-config' ref={maskConfigRef} component={'img'} sx={{ position: "absolute", top: 0, bottom: 0, opacity: 0 }} src='/assets/images/qrcode_mask.png' />
                 <canvas ref={canvasRef} style={{ width: { xs: "115px", md: "230px" }, height: { xs: "115px", md: "230px" } }} />
               </Box>
             </Box>
