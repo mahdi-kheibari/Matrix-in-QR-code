@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 // @mui
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Grid } from '@mui/material'
 // anime js
 import anime from 'animejs'
 // components
@@ -41,10 +41,14 @@ function StepFive({ setStep, changeStep, setChangeStep, setAllDataToMatrix, setD
         <Iconify icon="ph:info" sx={{ mx: 1 }} />
         <span>Reed–Solomon correction method</span>
       </Typography>
-      <Box sx={{ display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center", p: 2 }}>
-        <Box component={'img'} src='/assets/images/error_correction_ex_1.jpg' sx={{ borderRadius: "5px", opacity: 0 }} />
-        <Box component={'img'} src='/assets/images/error_correction_ex_2.jpg' sx={{ borderRadius: "5px", opacity: 0 }} />
-      </Box>
+      <Grid container spacing={0}>
+        <Grid item xs={6}>
+          <Box component={'img'} src='/assets/images/error_correction_ex_1.jpg' sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
+        </Grid>
+        <Grid item xs={6}>
+          <Box component={'img'} src='/assets/images/error_correction_ex_2.jpg' sx={{ borderRadius: "15px", opacity: 0, width: "100%", objectFit: "contain", p: 1 }} />
+        </Grid>
+      </Grid>
     </Box>
   )
 }
